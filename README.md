@@ -1,7 +1,9 @@
 # Projeto Compilador
 
 ## Descrição
-Este projeto implementa um compilador básico utilizando análise léxica e sintática para processar código-fonte. A estrutura do projeto segue a organização padrão de compiladores, com classes dedicadas à análise léxica e sintática. [Documentação ](https://github.com/YuriBykoff/CO/wiki)
+Este projeto implementa um compilador básico utilizando análise léxica e sintática para processar código-fonte. A estrutura do projeto segue a organização padrão de compiladores, com classes dedicadas à análise léxica e sintática. 
+
+[Documentação ](https://github.com/YuriBykoff/CO/wiki)
 
 ## Estrutura do Projeto
 
