@@ -4,7 +4,7 @@ import subprocess
 import os
 import threading
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static', static_folder='static')
 socketio = SocketIO(app)
 
 # Caminhos principais
