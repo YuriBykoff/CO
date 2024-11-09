@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>IDE Interativa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+    <style>
+        /* Tema branco e azul */
+        body {
+            background-color: #f7f9fc;
+            color: #333;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #004085;
+            font-weight: normal;
+            text-align: center;
+        }
+        .CodeMirror {
+            border: 1px solid #ccc;
+            height: 300px;
+            font-size: 16px;
+            background-color: #ffffff;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 4px;
+            display: block;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #terminal {
+            background-color: #ffffff;
+            color: #333;
+            padding: 15px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #inputField {
+            width: calc(100%); /* Ajusta a largura para alinhar com o terminal */
+            padding: 10px;
+            font-family: monospace;
+            font-size: 14px;
+            background-color: #ffffff;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-top: 10px;
+            outline: none;
+            box-sizing: border-box; /* Garante que padding e borda não aumentem a largura total */
+        }
+        #inputField:focus {
+            border-color: #007bff;
+        }
+        .instructions {
+            background-color: #e9f2ff;
+            color: #004085;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border: 1px solid #b8daff;
+        }
+    </style>
+</head>
+<body>
+    <div class="instructions">
+        <h1>IDE - Terminal Interativo</h1>
+        <a href="https://github.com/YuriBykoff/CO/wiki/Documenta%C3%A7%C3%A3o-da-Linguagem-de-Programa%C3%A7%C3%A3o">Link</a>
+    </div>
+
+    <textarea id="editor">Digite seu código aqui...</textarea>
+
+    <button onclick="executeCode()">Compilar e Executar</button>
+
+    <h2>Terminal:</h2>
+    <div id="terminal"></div>
+    <input type="text" id="inputField" placeholder="Digite um comando...">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+            lineNumbers: true,
+            mode: "text/x-java",
+            theme: "default"  // Tema padrão com fundo branco
+        });
+
+        const socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        // Envia o código para o backend e executa
+        function executeCode() {
+            const code = editor.getValue();
+            socket.emit('execute_code', { code: code });
+        }
+
+        // Exibe o output do servidor no terminal
+        socket.on('output', function(data) {
+            const terminal = document.getElementById("terminal");
+            terminal.innerHTML += data + "<br>";
+            terminal.scrollTop = terminal.scrollHeight;
+        });
+
+        // Envia a entrada do usuário ao pressionar Enter
+        document.getElementById("inputField").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                const input = event.target.value;
+                socket.emit('send_input', { input: input });
+                event.target.value = "";  // Limpa o campo após o envio
+            }
+        });
+    </script>
+</body>
+</html>
