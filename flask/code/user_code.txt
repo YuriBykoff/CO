@@ -1,9 +1,0 @@
-se x == 90 e y >= teste {
- x = 90 + 8;
-}
-senao_se x == 80 ou y < teste {
- x = 90 + 10;
-} 
-senao {
- x = 10;
-}
