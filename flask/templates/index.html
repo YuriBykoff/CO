@@ -2,111 +2,282 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <title>IDE Interativa</title>
+    <title>IDE Minimalista</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
     <style>
+        /* Importando a JetBrains Mono do Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+
         body {
-            background-color: #f7f9fc;
-            color: #333;
-            font-family: Arial, sans-serif;
+            background-color: #111111;
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
             margin: 0;
-            padding: 20px;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            line-height: 1.5;
         }
+
         h1 {
-            color: #004085;
-            font-weight: normal;
-            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 400;  /* Ajustado para regular/normal */
+            margin-bottom: 2rem;
+            letter-spacing: -0.5px;
+            color: #ffffff;
         }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .editor-section, .output-section {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+
         .CodeMirror {
-            border: 1px solid #ccc;
-            height: 300px;
-            font-size: 16px;
-            background-color: #ffffff;
+            border: 1px solid #333;
             border-radius: 4px;
+            background-color: #0a0a0a !important;
+            font-family: 'JetBrains Mono', monospace !important;
+            font-size: 14px;
+            color: #ffffff !important;
         }
-        button {
-            background-color: #007bff;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            margin: 10px 0;
+
+        .CodeMirror-gutters {
+            background-color: #0a0a0a !important;
+            border-right: 1px solid #333 !important;
+        }
+
+        .CodeMirror-linenumber {
+            color: #666666 !important;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        .left-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .right-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        button, .clear {
+            background-color: #1a1a1a;
+            border: 1px solid #444;
+            padding: 8px 16px;
+            font-size: 12px;
             cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
             border-radius: 4px;
-            display: block;
-            width: 100%;
         }
+
+        button:hover, .clear:hover {
+            background-color: #fff;
+            color: #000;
+            transition: all 0.2s ease;
+        }
+
         .clear {
-            background-color: #DC143C;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            margin: 10px 0;
-            cursor: pointer;
-            border-radius: 4px;
-            display: block;
-            width: 100%;
+            border-color: #333;
         }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .clear:hover {
-            background-color: #af1131;
-        }
+
         #terminal {
-            background-color: #ffffff;
-            color: #333;
-            padding: 15px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            font-weight: 400;
             height: 300px;
             overflow-y: auto;
-            font-family: monospace;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        #inputField {
-            width: calc(100%);
-            padding: 10px;
-            font-family: monospace;
-            font-size: 14px;
-            background-color: #ffffff;
-            color: #333;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-top: 10px;
-            outline: none;
+            padding: 0;
+            margin: 0;
+            position: relative;
+            width: 100%;
             box-sizing: border-box;
         }
-        #inputField:focus {
-            border-color: #007bff;
-        }
-        .instructions {
-            background-color: #e9f2ff;
-            color: #004085;
-            padding: 15px;
+
+        #inputField {
+            width: 100%;
+            background-color: #0a0a0a;
+            border: 1px solid #333;
             border-radius: 4px;
-            margin-bottom: 20px;
-            border: 1px solid #b8daff;
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            padding: 10px;
+            margin-top: 10px;
+            box-sizing: border-box;
+            margin-right: 0;
+            margin-left: 0;
         }
-        /* Estilos para mensagens de debug, erro e padrão */
-        .debug { color: green; margin: 0; line-height: 1.2; }
-        .error { color: red; margin: 0; line-height: 1.2; }
-        .default-output { color: #333; margin: 0; line-height: 1.2; } /* Preto padrão */
+
+        #inputField:focus {
+            outline: none;
+        }
+
+        .instructions {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 10px;
+            line-height: 1.6;
+
+        }
+
+        /* Mensagens com design minimalista */
+        .debug { color: #00ff00; }
+        .error { color: #ff0000; }
+        .default-output { color: #fff; }
+
+        #terminal p {
+            margin: 0;
+            padding: 2px 0;
+        }
+
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+        }
+
+        /* Responsividade */
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Animações sutis */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .editor-section, .output-section {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* Status bar minimalista */
+        .status-bar {
+            font-size: 12px;
+            color: #666;
+            padding: 10px 0;
+            border-top: 1px solid #1a1a1a;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #00ff00;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        /* Cursor do CodeMirror */
+        .CodeMirror-cursor {
+            border-left: 2px solid #f8f8f2 !important;
+        }
+
+        /* Cor de seleção do texto */
+        .CodeMirror-selected {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .CodeMirror-line::selection,
+        .CodeMirror-line > span::selection,
+        .CodeMirror-line > span > span::selection {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        /* Cor do texto selecionado */
+        .CodeMirror-selectedtext {
+            color: #ffffff !important;
+        }
+
+        /* Cor de fundo quando a linha está ativa */
+        .CodeMirror-activeline-background {
+            background: #1a1a1a !important;
+        }
+
+        /* Cores do CodeMirror */
+        .cm-s-default .cm-keyword { color: #ff79c6 !important; }     /* Palavras-chave: rosa */
+        .cm-s-default .cm-def { color: #50fa7b !important; }         /* Definições: verde */
+        .cm-s-default .cm-variable { color: #f8f8f2 !important; }    /* Variáveis: branco suave */
+        .cm-s-default .cm-operator { color: #ff79c6 !important; }    /* Operadores: rosa */
+        .cm-s-default .cm-number { color: #bd93f9 !important; }      /* Números: roxo */
+        .cm-s-default .cm-string { color: #f1fa8c !important; }      /* Strings: amarelo */
+        .cm-s-default .cm-comment { color: #6272a4 !important; }     /* Comentários: azul acinzentado */
+        .cm-s-default .cm-builtin { color: #50fa7b !important; }     /* Funções built-in: verde */
+        .cm-s-default .cm-property { color: #66d9ef !important; }    /* Propriedades: azul claro */
+        .cm-s-default .cm-atom { color: #bd93f9 !important; }        /* Átomos/booleanos: roxo */
+
+        .compile-btn {
+            color: hsl(142.1, 76.2%, 36.3%) !important; /* Verde */
+            font-weight: 500;  /* Ajustado para regular/normal */
+
+        }
+
+        .clear-btn {
+            color: hsl(0, 72.2%, 50.6%) !important; /* Vermelho */
+            font-weight: 500;  /* Ajustado para regular/normal */
+
+        }
+
+        .copy-btn {
+            color: #f8f8f2 !important; /* Branco */
+            font-weight: 500;  /* Ajustado para regular/normal */
+
+        }
     </style>
+    
 </head>
 <body>
     <div class="instructions">
         <h1>IDE - Terminal Interativo</h1>
-        <a href="https://github.com/YuriBykoff/CO/wiki/Documenta%C3%A7%C3%A3o-da-Linguagem-de-Programa%C3%A7%C3%A3o">Link</a>
     </div>
 
-    <textarea id="editor">Digite seu código aqui...</textarea>
+    <textarea id="editor"></textarea>
+    
+    <div class="button-container">
+        <div class="left-buttons">
+            <button class="compile-btn" onclick="executeCode()">Compilar e Executar</button>
+            <button class="clear-btn" onclick="clearTerminal()">Limpar CMD</button>
+            <button class="clear-btn" onclick="clearEditor()">Limpar Codigo</button>
 
-    <button onclick="executeCode()">Compilar e Executar</button>
-    <button class="clear" onclick="clearTerminal()">Limpar CMD</button>
+        </div>
+        <div class="right-buttons">
+            <button class="copy-btn" onclick="insertTemplate('calculadoraBasica')">Calculadora Básica</button>
+            <button class="copy-btn" onclick="insertTemplate('loopParidade')">Loop e Controle de Paridade</button>
 
-    <h2>Terminal:</h2>
+        </div>
+    </div>
+
+    <h1>Terminal:</h1>
     <div id="terminal"></div>
     <input type="text" id="inputField" placeholder="Digite um comando...">
 
@@ -143,7 +314,8 @@
         var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
             lineNumbers: true,
             mode: "novaLinguagem",
-            theme: "default"
+            theme: "default",
+            background: "transparent"
         });
 
         const socket = io.connect('http://' + document.domain + ':' + location.port);
@@ -184,6 +356,110 @@
                 event.target.value = "";
             }
         });
+    </script>
+    <script>
+        // Adicione esta função para copiar o texto
+        function copyText(text) {
+            const editor = document.querySelector('.CodeMirror').CodeMirror;
+            const doc = editor.getDoc();
+            const cursor = doc.getCursor();
+            doc.replaceRange(text, cursor);
+            editor.focus();
+        }
+        </script>
+    <script>
+        const codeTemplates = {
+            calculadoraBasica: 
+`inteiro a;
+inteiro b;
+inteiro c;
+decimal d;
+
+exibirln("Calculadora Basica");
+exibirln("Digite o valor de A");
+a = leiaInteiro();
+exibirln("Digite o valor de B");
+b = leiaInteiro();
+
+exibirln("Escolha a operacao:");
+exibirln("1 - Adicao");
+exibirln("2 - Subtracao");
+exibirln("3 - Multiplicacao");
+exibirln("4 - Divisao");
+
+inteiro operacao;
+operacao = leiaInteiro();
+
+se operacao == 1 {
+    c = a + b;
+    exibirln("Voce escolheu Adicao.");
+    exibirln("O resultado de A + B e:");
+    exibirln(c);
+} senao se operacao == 2 {
+    c = a - b;
+    exibirln("Voce escolheu Subtracao.");
+    exibirln("O resultado de A - B e:");
+    exibirln(c);
+} senao se operacao == 3 {
+    c = a * b;
+    exibirln("Voce escolheu Multiplicacao.");
+    exibirln("O resultado de A * B e:");
+    exibirln(c);
+} senao se operacao == 4 {
+    se b != 0 {
+        d = a / b;
+        exibirln("Voce escolheu Divisao.");
+        exibirln("O resultado de A / B e:");
+        exibirln(d);
+    } senao {
+        exibirln("Erro: Divisao por zero nao e permitida.");
+    }
+} senao {
+    exibirln("Operacao invalida. Por favor, escolha entre 1 e 4.");
+}
+
+exibirln("Programa finalizado.");
+
+`,
+            loopParidade:
+`inteiro paridade;
+paridade = 0;
+
+exibirln("Inicio do loop PARA:");
+inteiro i;
+para i = 0; i < 5; i = i + 1 {
+    se paridade == 0 {
+        exibir("Contador par: ");
+        paridade = 1;
+    } senao {
+        exibir("Contador impar: ");
+        paridade = 0;
+    }
+    exibirln(i);
+}
+
+exibirln("Inicio do loop PARA com incremento de 2:");
+para i = 0; i < 10; i = i + 2 {
+    exibir("Valor de i (incremento de 2): ");
+    exibirln(i);
+}
+
+exibirln("Fim do programa.");
+
+`
+        };
+
+        function insertTemplate(templateName) {
+            const template = codeTemplates[templateName];
+            if (template) {
+                copyText(template);
+            }
+        }
+    </script>
+    <script>
+        function clearEditor() {
+            editor.setValue('');
+        }
     </script>
 </body>
 </html>
