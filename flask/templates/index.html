@@ -5,7 +5,6 @@
     <title>IDE Interativa</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
     <style>
-        /* Tema branco e azul */
         body {
             background-color: #f7f9fc;
             color: #333;
@@ -38,7 +37,7 @@
             width: 100%;
         }
         .clear {
-            background-color: #DC143C	;
+            background-color: #DC143C;
             border: none;
             color: white;
             padding: 10px 20px;
@@ -49,15 +48,12 @@
             display: block;
             width: 100%;
         }
-
         button:hover {
             background-color: #0056b3;
         }
-
         .clear:hover {
             background-color: #af1131;
         }
-
         #terminal {
             background-color: #ffffff;
             color: #333;
@@ -70,7 +66,7 @@
             border-radius: 4px;
         }
         #inputField {
-            width: calc(100%); /* Ajusta a largura para alinhar com o terminal */
+            width: calc(100%);
             padding: 10px;
             font-family: monospace;
             font-size: 14px;
@@ -80,7 +76,7 @@
             border-radius: 4px;
             margin-top: 10px;
             outline: none;
-            box-sizing: border-box; /* Garante que padding e borda não aumentem a largura total */
+            box-sizing: border-box;
         }
         #inputField:focus {
             border-color: #007bff;
@@ -93,6 +89,10 @@
             margin-bottom: 20px;
             border: 1px solid #b8daff;
         }
+        /* Estilos para mensagens de debug, erro e padrão */
+        .debug { color: green; margin: 0; line-height: 1.2; }
+        .error { color: red; margin: 0; line-height: 1.2; }
+        .default-output { color: #333; margin: 0; line-height: 1.2; } /* Preto padrão */
     </style>
 </head>
 <body>
@@ -112,39 +112,76 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/mode/simple.min.js"></script>
+
+    <script>
+        CodeMirror.defineSimpleMode("novaLinguagem", {
+            start: [
+                {regex: /\b(inteiro|decimal)\b/, token: "keyword"},
+                {regex: /\b(se|senao|enquanto|para)\b/, token: "keyword"},
+                {regex: /\b(exibir|exibirln|leiaInteiro)\b/, token: "builtin"},
+                {regex: /\/\/.*/, token: "comment"},
+                {regex: /\/\*/, token: "comment", next: "comment"},
+                {regex: /"(?:[^\\]|\\.)*?"/, token: "string"},
+                {regex: /[-+\/*=<>!]+/, token: "operator"},
+                {regex: /[a-zA-Z_]\w*/, token: "variable"},
+                {regex: /[\{\[\(]/, indent: true},
+                {regex: /[\}\]\)]/, dedent: true},
+                {regex: /[0-9]+(?:\.[0-9]+)?/, token: "number"},
+            ],
+            comment: [
+                {regex: /.*?\*\//, token: "comment", next: "start"},
+                {regex: /.*/, token: "comment"}
+            ],
+            meta: {
+                lineComment: "//"
+            }
+        });
+    </script>
+    
     <script>
         var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
             lineNumbers: true,
-            mode: "text/x-java",
-            theme: "default"  // Tema padrão com fundo branco
+            mode: "novaLinguagem",
+            theme: "default"
         });
 
         const socket = io.connect('http://' + document.domain + ':' + location.port);
 
-        // Envia o código para o backend e executa
         function executeCode() {
             const code = editor.getValue();
             socket.emit('execute_code', { code: code });
         }
 
-        // Função para limpar o terminal
         function clearTerminal() {
             document.getElementById("terminal").innerHTML = "";
         }
 
-        // Exibe o output do servidor no terminal
         socket.on('output', function(data) {
             const terminal = document.getElementById("terminal");
-            terminal.innerHTML += data + "<br>";
+            const message = document.createElement('p');
+
+            // Define o conteúdo e a classe de acordo com o tipo de mensagem
+            if (data.type === 'debug') {
+                message.classList.add('debug');
+                message.textContent = data.message;
+            } else if (data.type === 'error') {
+                message.classList.add('error');
+                message.textContent = data.message;
+            } else {
+                message.classList.add('default-output');
+                message.textContent = data.message || JSON.stringify(data);
+            }
+
+            terminal.appendChild(message);
             terminal.scrollTop = terminal.scrollHeight;
         });
 
-        // Envia a entrada do usuário ao pressionar Enter
         document.getElementById("inputField").addEventListener("keydown", function(event) {
             if (event.key === "Enter") {
                 const input = event.target.value;
                 socket.emit('send_input', { input: input });
-                event.target.value = "";  // Limpa o campo após o envio
+                event.target.value = "";
             }
         });
     </script>
