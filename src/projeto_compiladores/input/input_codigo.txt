@@ -1,0 +1,26 @@
+inteiro contador;
+contador = 0;
+inteiro paridade;
+paridade = 0;
+
+exibirln("Inicio do loop ENQUANTO:");
+enquanto contador < 5 {
+    se paridade == 0 {
+        exibir("Contador par: ");
+        paridade = 1;
+    } senao {
+        exibir("Contador impar: ");
+        paridade = 0;
+    }
+    exibirln(contador);
+    contador = contador + 1;
+}
+
+exibirln("Inicio do loop PARA:");
+inteiro i;
+para i = 0; i < 5; i = i + 1 {
+    exibir("Valor de i: ");
+    exibirln(i);
+}
+
+exibirln("Fim do programa.");
