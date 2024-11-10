@@ -1,32 +1,127 @@
-# Projeto Compilador
+# Projeto Compiladores - Analisador Léxico e Sintático
 
-## Descrição
-Este projeto implementa um compilador básico utilizando análise léxica e sintática para processar código-fonte. A estrutura do projeto segue a organização padrão de compiladores, com classes dedicadas à análise léxica e sintática. 
+## Autores
+- **Arthur Veloso** - RA: 22.221.038-7
+- **Daniel Eiji** - RA: 22.121.131-1
+- **Yuri Bykoff** - RA: 22.121.045-3
+
+## Documentação
 
 [Documentação ](https://github.com/YuriBykoff/CO/wiki)
 
-## Estrutura do Projeto
+## Estrutura do Projeto Java
 
-### Diretórios e Arquivos:
+### Diretórios Principais
+```
+src/projeto_compiladores/
+├── input/                  # Diretório contendo arquivos de entrada
+├── lexer/                  # Analisador Léxico
+├── parser/                 # Analisador Sintático
+└── tokens/                 # Definições dos Tokens
+```
 
+### Detalhamento dos Componentes
 
-- **src/**: Diretório contendo todo o código-fonte do projeto.
-  - **AFD.java**: Implementa um Autômato Finito Determinístico (AFD), utilizado para reconhecer padrões no código-fonte, como identificadores e palavras reservadas.
-  - **Decimal.java**: Responsável por reconhecer e processar números decimais no código-fonte.
-  - **Lexer.java**: O analisador léxico, encarregado de transformar o código-fonte em uma sequência de tokens utilizando diferentes AFDs.
-  - **MathOperator.java**: Implementa a lógica de reconhecimento de operadores matemáticos no código.
-  - **OperacaoDelimitadores.java**: Responsável por identificar delimitadores (como parênteses, colchetes, etc.) no código-fonte.
-  - **Parser.java**: O analisador sintático, que utiliza a sequência de tokens gerada pelo Lexer para validar a conformidade do código-fonte com a gramática definida.
-  - **Projeto_Compiladores.java**: Classe principal do projeto, onde o processo de compilação é iniciado e coordenado.
-  - **Token.java**: Define a estrutura de um token, que é uma unidade lexical identificada pelo Lexer, como palavras-chave, operadores ou identificadores.
-  - **id.java**: Implementa a lógica de reconhecimento de identificadores no código-fonte.
-  - **input_codigo.txt**: Um exemplo de código-fonte de entrada utilizado para testar o compilador.
-  - **num_inteiro.java**: Classe responsável por reconhecer e processar números inteiros.
-  - **reservado.java**: Classe que identifica palavras reservadas da linguagem no código-fonte.
-  - **texto.java**: Responsável por reconhecer e processar literais de texto (strings) no código.
+#### 1. Lexer (Analisador Léxico)
+- Localizado em `src/projeto_compiladores/lexer/`
+- Responsável pela análise léxica do código fonte
+- Identifica e classifica os tokens da linguagem
+- Principais componentes:
+  - Reconhecimento de identificadores
+  - Análise de números
+  - Identificação de operadores
+  - Tratamento de strings
+  - Gerenciamento de palavras reservadas
 
+#### 2. Parser (Analisador Sintático)
+- Localizado em `src/projeto_compiladores/parser/`
+- Realiza a análise sintática dos tokens
+- Verifica a estrutura gramatical do código
+- Implementa as regras da gramática da linguagem
 
-## Estrutura do Compilador
-- **Analisador Léxico (Lexer)**: Responsável por transformar o código-fonte em tokens, utilizando Autômatos Finitos Determinísticos (AFDs) para reconhecer padrões.
-- **Analisador Sintático (Parser)**: Responsável por verificar se a sequência de tokens gerada pelo Lexer segue as regras da gramática definida.
+#### 3. Tokens
+- Localizado em `src/projeto_compiladores/tokens/`
+- Define os tipos de tokens suportados
+- Implementa a estrutura de dados para tokens
+- Gerencia a classificação dos elementos léxicos
 
+# Tutorial de Execução
+
+## 1. Configuração do Arquivo de Input
+1. Navegue até a pasta `src/projeto_compiladores/input`
+2. Localize o arquivo `input_codigo.txt`
+3. Copie o caminho completo deste arquivo
+4. Navegue até `src/projeto_compiladores/`
+5. Localize e abra o arquivo que contém o path do input
+6. Substitua o caminho existente pelo caminho que você copiou do `input_codigo.txt`
+
+## 2. Compilação do Java
+1. Abra um terminal na pasta `src`
+2. Execute o comando de compilação:
+```bash
+javac -d ../build projeto_compiladores/*.java projeto_compiladores/lexer/*.java projeto_compiladores/parser/*.java projeto_compiladores/tokens/*.java
+```
+3. Verifique se os arquivos foram compilados com sucesso na pasta `/build`
+
+## 3. Configuração do Ambiente Python
+1. Navegue até a pasta `flask`
+2. Crie um ambiente virtual:
+```bash
+python -m venv .venv
+```
+
+3. Ative o ambiente virtual:
+
+**Windows (Command Prompt)**:
+```cmd
+.venv\Scripts\activate.bat
+```
+
+**Windows (PowerShell)**:
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+**macOS/Linux**:
+```bash
+source .venv/bin/activate
+```
+
+## 4. Instalação das Dependências
+Com o ambiente virtual ativado, instale as dependências:
+```bash
+pip install flask flask-socketio
+```
+
+## 5. Execução do Aplicativo
+1. Execute o aplicativo Flask:
+```bash
+python app.py
+```
+
+2. Abra seu navegador e acesse:
+```
+http://127.0.0.1:5000/
+```
+
+3. O terminal web estará pronto para uso!
+
+## Observações
+- Certifique-se de que todas as pastas estão no caminho correto
+- O ambiente virtual (.venv) deve estar ativado sempre que for executar o aplicativo
+- Mantenha o terminal aberto enquanto estiver usando o aplicativo
+
+## Estrutura Completa do Projeto
+```
+Projeto_Compiladores/
+├── build/                  # Arquivos compilados
+├── flask/                  # Interface web
+│   └──  app.py             # Aplicação Flask
+│  
+├── src/
+│   └── projeto_compiladores/
+│       ├── input/ 
+│       │   └── input_codigo.txt            # Arquivo de input para o compilador.
+│       └── Projeto_Compiladores.java       # Start do compilador.
+└── Main.java                               # Código traduzido apartir do compilador.
+```
