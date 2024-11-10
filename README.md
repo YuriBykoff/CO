@@ -5,7 +5,7 @@
 - **Daniel Eiji** - RA: 22.121.131-1
 - **Yuri Bykoff** - RA: 22.121.045-3
 
-## Documentação
+## Wiki
 
 [Documentação ](https://github.com/YuriBykoff/CO/wiki/Documenta%C3%A7%C3%A3o-da-Linguagem-de-Programa%C3%A7%C3%A3o)
 
