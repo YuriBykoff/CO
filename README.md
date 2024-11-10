@@ -7,7 +7,7 @@
 
 ## Documentação
 
-[Documentação ](https://github.com/YuriBykoff/CO/wiki)
+[Documentação ](https://github.com/YuriBykoff/CO/wiki/Documenta%C3%A7%C3%A3o-da-Linguagem-de-Programa%C3%A7%C3%A3o)
 
 ## Estrutura do Projeto Java
 
