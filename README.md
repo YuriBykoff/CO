@@ -1,16 +1,11 @@
 # Projeto Compiladores - Analisador Léxico e Sintático
 
-## Autores
+## Equipe
 - **Arthur Veloso** - RA: 22.221.038-7
 - **Daniel Eiji** - RA: 22.121.131-1
 - **Yuri Bykoff** - RA: 22.121.045-3
 
-## Wiki
-
-[Documentação ](https://github.com/YuriBykoff/CO/wiki/Documenta%C3%A7%C3%A3o-da-Linguagem-de-Programa%C3%A7%C3%A3o)
-
-## Estrutura do Projeto Java
-
+## Arquitetura do Sistema
 ### Diretórios Principais
 ```
 src/projeto_compiladores/
@@ -20,9 +15,9 @@ src/projeto_compiladores/
 └── tokens/                 # Definições dos Tokens
 ```
 
-### Detalhamento dos Componentes
+## Componentes Principais
 
-#### 1. Lexer (Analisador Léxico)
+### Lexer (Analisador Léxico)
 - Localizado em `src/projeto_compiladores/lexer/`
 - Responsável pela análise léxica do código fonte
 - Identifica e classifica os tokens da linguagem
@@ -33,21 +28,21 @@ src/projeto_compiladores/
   - Tratamento de strings
   - Gerenciamento de palavras reservadas
 
-#### 2. Parser (Analisador Sintático)
+### Parser (Analisador Sintático)
 - Localizado em `src/projeto_compiladores/parser/`
 - Realiza a análise sintática dos tokens
 - Verifica a estrutura gramatical do código
 - Implementa as regras da gramática da linguagem
 
-#### 3. Tokens
+### Tokens
 - Localizado em `src/projeto_compiladores/tokens/`
 - Define os tipos de tokens suportados
 - Implementa a estrutura de dados para tokens
 - Gerencia a classificação dos elementos léxicos
 
-# Tutorial de Execução
+## Guia de Instalação e Uso
 
-## 1. Configuração do Arquivo de Input
+### Configuração do Input
 1. Navegue até a pasta `src/projeto_compiladores/input`
 2. Localize o arquivo `input_codigo.txt`
 3. Copie o caminho completo deste arquivo
@@ -55,7 +50,7 @@ src/projeto_compiladores/
 5. Localize e abra o arquivo que contém o path do input
 6. Substitua o caminho existente pelo caminho que você copiou do `input_codigo.txt`
 
-## 2. Compilação do Java
+### Compilação Java
 1. Abra um terminal na pasta `src`
 2. Execute o comando de compilação:
 ```bash
@@ -63,7 +58,7 @@ javac -d ../build projeto_compiladores/*.java projeto_compiladores/lexer/*.java 
 ```
 3. Verifique se os arquivos foram compilados com sucesso na pasta `/build`
 
-## 3. Configuração do Ambiente Python
+### Setup do Ambiente Python
 1. Navegue até a pasta `flask`
 2. Crie um ambiente virtual:
 ```bash
@@ -87,13 +82,13 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-## 4. Instalação das Dependências
+### Instalação de Dependências
 Com o ambiente virtual ativado, instale as dependências:
 ```bash
 pip install flask flask-socketio
 ```
 
-## 5. Execução do Aplicativo
+### Execução da Aplicação
 1. Execute o aplicativo Flask:
 ```bash
 python app.py
@@ -106,12 +101,12 @@ http://127.0.0.1:5000/
 
 3. O terminal web estará pronto para uso!
 
-## Observações
+## Notas Importantes
 - Certifique-se de que todas as pastas estão no caminho correto
 - O ambiente virtual (.venv) deve estar ativado sempre que for executar o aplicativo
 - Mantenha o terminal aberto enquanto estiver usando o aplicativo
 
-## Estrutura Completa do Projeto
+## Estrutura do Projeto
 ```
 Projeto_Compiladores/
 ├── build/                  # Arquivos compilados
